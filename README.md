@@ -5,7 +5,7 @@
 
 Perp-driven basket vaults backed by a shared perpetual liquidity pool, built on a GMX v1 fork.
 
-## Architecture
+## Architecture - Index Flow
 
 **Hub-and-spoke topology:** One **hub** chain runs the full perp stack (VaultAccounting, GMX pool, OracleAdapter, etc.). **Spoke** chains are deposit-only with `StateRelay` for routing weights and NAV adjustments; the layout can scale to many spokes as configured in [`config/chains.json`](config/chains.json). A keeper service posts state to all chains each epoch.
 
