@@ -23,7 +23,7 @@
     "keeper:once": "sh scripts/run-keeper-once.sh",
     "deploy:sepolia": "CHAIN=sepolia forge script script/Deploy.s.sol:Deploy --rpc-url sepolia --broadcast -vvv && npm run keeper:once",
     "deploy:mantle-sepolia": "CHAIN=mantle-sepolia forge script script/Deploy.s.sol:Deploy --rpc-url mantle_sepolia --broadcast --slow -vvv && CHAIN=mantle-sepolia forge script script/WireStateRelay.s.sol:WireStateRelay --rpc-url mantle_sepolia --broadcast --slow -vvv && KEEPER_CHAINS=mantle-sepolia npm run keeper:once",
-    "deploy:fuji": "CHAIN=fuji forge script script/Deploy.s.sol:Deploy --rpc-url fuji --broadcast -vvv && npm run keeper:once",
+    "deploy:fuji": "CHAIN=fuji forge script script/DeploySpoke.s.sol:DeploySpoke --rpc-url fuji --broadcast -vvv && CHAIN=fuji forge script script/WireStateRelay.s.sol:WireStateRelay --rpc-url fuji --broadcast -vvv && KEEPER_CHAINS=fuji npm run keeper:once",
     "deploy:chain": "sh scripts/deploy-chain.sh",
     "sync:local": "forge script script/SyncAllOraclePrices.s.sol:SyncAllOraclePrices --rpc-url local --broadcast",
     "sync:sepolia": "DEPLOYMENT_CONFIG=apps/web/src/config/sepolia-deployment.json forge script script/SyncAllOraclePrices.s.sol:SyncAllOraclePrices --rpc-url sepolia --broadcast",
