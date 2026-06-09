@@ -57,23 +57,23 @@ Perp-driven basket vaults backed by a shared perpetual liquidity pool, built on 
 
 Exact hub/spoke rollout is defined in [`config/chains.json`](config/chains.json).
 
-| Contract | Hub | Spoke | Notes |
-| --- | --- | --- | --- |
-| `BasketFactory` | Yes | Yes (no oracle) | Spoke factory passes `address(0)` for oracle |
-| `BasketVault` | Yes | Yes | Spoke vaults have `vaultAccounting = address(0)` |
-| `BasketShareToken` | Yes | Yes | Created by factory per basket |
-| `VaultAccounting` | Yes | No | Perp capital tracking, hub only |
-| `OracleAdapter` | Yes | No | Price feeds, hub only |
-| `PricingEngine` | Yes | No | Execution quotes, hub only |
-| `FundingRateManager` | Yes | No | GMX funding, hub only |
-| `PriceSync` | Yes | No | Oracle→GMX sync, hub only |
-| `PerpReader` | Yes | No | Read aggregation, hub only |
-| `AssetWiring` | Yes | No | Asset bootstrap, hub only |
-| `GMX fork` | Yes | No | Shared liquidity pool, hub only |
-| `StateRelay` | Yes | Yes | Routing weights + PnL adjustments |
-| `RedemptionReceiver` | No | Yes | CCIP inbound for redemption fills |
-| `PoolReserveRegistry` | Yes (legacy) | No | Superseded by StateRelay |
-| `USDC` (or MockUSDC) | Yes | Yes | Deposit/redemption token |
+| Contract              | Hub          | Spoke           | Notes                                            |
+| --------------------- | ------------ | --------------- | ------------------------------------------------ |
+| `BasketFactory`       | Yes          | Yes (no oracle) | Spoke factory passes `address(0)` for oracle     |
+| `BasketVault`         | Yes          | Yes             | Spoke vaults have `vaultAccounting = address(0)` |
+| `BasketShareToken`    | Yes          | Yes             | Created by factory per basket                    |
+| `VaultAccounting`     | Yes          | No              | Perp capital tracking, hub only                  |
+| `OracleAdapter`       | Yes          | No              | Price feeds, hub only                            |
+| `PricingEngine`       | Yes          | No              | Execution quotes, hub only                       |
+| `FundingRateManager`  | Yes          | No              | GMX funding, hub only                            |
+| `PriceSync`           | Yes          | No              | Oracle→GMX sync, hub only                        |
+| `PerpReader`          | Yes          | No              | Read aggregation, hub only                       |
+| `AssetWiring`         | Yes          | No              | Asset bootstrap, hub only                        |
+| `GMX fork`            | Yes          | No              | Shared liquidity pool, hub only                  |
+| `StateRelay`          | Yes          | Yes             | Routing weights + PnL adjustments                |
+| `RedemptionReceiver`  | No           | Yes             | CCIP inbound for redemption fills                |
+| `PoolReserveRegistry` | Yes (legacy) | No              | Superseded by StateRelay                         |
+| `USDC` (or MockUSDC)  | Yes          | Yes             | Deposit/redemption token                         |
 
 Hub deployments use `script/Deploy.s.sol`. Spoke deployments use `script/DeploySpoke.s.sol` (deploys only USDC, BasketFactory, and StateRelay). The `scripts/deploy-all.sh` script reads `config/chains.json` and selects the correct script per chain role.
 
@@ -345,29 +345,29 @@ For Forge scripts and root-level tooling, set RPC URLs and explorer API keys in 
 
 The Next.js web app reads `apps/web/.env.local` (or shell). Required and optional variables:
 
-| Variable | Required | Description |
-| --- | --- | --- |
-| `NEXT_PUBLIC_PRIVY_APP_ID` | Yes | Privy app ID from [dashboard.privy.io](https://dashboard.privy.io) |
-| `NEXT_PUBLIC_ENVIO_URL` | Yes (for indexer-backed views) | Envio HyperIndex GraphQL (Hasura) endpoint serving all chains, e.g. `http://127.0.0.1:8080/v1/graphql` locally or the deployed Envio Cloud URL. When unset, indexer-backed views fall back to RPC reads. |
-| `NEXT_PUBLIC_PUSH_SERVICE_URL` | No | Cloud Run push-worker base URL used by `/settings` for preferences/subscription APIs |
-| `NEXT_PUBLIC_E2E_TEST_MODE` | No | Set to `1` for deterministic E2E mock wallet |
+| Variable                       | Required                       | Description                                                                                                                                                                                              |
+| ------------------------------ | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_PRIVY_APP_ID`     | Yes                            | Privy app ID from [dashboard.privy.io](https://dashboard.privy.io)                                                                                                                                       |
+| `NEXT_PUBLIC_ENVIO_URL`        | Yes (for indexer-backed views) | Envio HyperIndex GraphQL (Hasura) endpoint serving all chains, e.g. `http://127.0.0.1:8080/v1/graphql` locally or the deployed Envio Cloud URL. When unset, indexer-backed views fall back to RPC reads. |
+| `NEXT_PUBLIC_PUSH_SERVICE_URL` | No                             | Cloud Run push-worker base URL used by `/settings` for preferences/subscription APIs                                                                                                                     |
+| `NEXT_PUBLIC_E2E_TEST_MODE`    | No                             | Set to `1` for deterministic E2E mock wallet                                                                                                                                                             |
 
 ### Push Worker Environment (`apps/push-worker`)
 
 The push worker service (Cloud Run) requires:
 
-| Variable | Required | Description |
-| --- | --- | --- |
-| `VAPID_PUBLIC_KEY` | Yes | Web Push VAPID public key (base64url) |
-| `VAPID_PRIVATE_KEY` | Yes | Web Push VAPID private key (base64url) |
-| `VAPID_CONTACT_EMAIL` | Yes | Contact identity passed to push services (for example `mailto:ops@indexflow.app`) |
-| `ENVIO_URL` | Yes | Envio HyperIndex GraphQL endpoint for dispatch signal scans (Hasura). |
-| `DISPATCH_AUTH_TOKEN` | Yes | Bearer token required by `POST /v1/push/dispatch` |
-| `OPEN_INTEREST_NEAR_CAP_BPS` | No | Threshold for open-interest alerting (default `9000`) |
-| `ORACLE_STALE_THRESHOLD_SECONDS` | No | Oracle staleness threshold in seconds (default `2700`) |
-| `LARGE_PNL_THRESHOLD_USD` | No | Realized PnL threshold for large-PnL alerts (default `5000`) |
-| `RESERVE_BREACH_COOLDOWN_MS` | No | Cooldown window for reserve-breach repeat alerts (default `1800000`) |
-| `PORT` | No | HTTP listen port (default `8080`) |
+| Variable                         | Required | Description                                                                       |
+| -------------------------------- | -------- | --------------------------------------------------------------------------------- |
+| `VAPID_PUBLIC_KEY`               | Yes      | Web Push VAPID public key (base64url)                                             |
+| `VAPID_PRIVATE_KEY`              | Yes      | Web Push VAPID private key (base64url)                                            |
+| `VAPID_CONTACT_EMAIL`            | Yes      | Contact identity passed to push services (for example `mailto:ops@indexflow.app`) |
+| `ENVIO_URL`                      | Yes      | Envio HyperIndex GraphQL endpoint for dispatch signal scans (Hasura).             |
+| `DISPATCH_AUTH_TOKEN`            | Yes      | Bearer token required by `POST /v1/push/dispatch`                                 |
+| `OPEN_INTEREST_NEAR_CAP_BPS`     | No       | Threshold for open-interest alerting (default `9000`)                             |
+| `ORACLE_STALE_THRESHOLD_SECONDS` | No       | Oracle staleness threshold in seconds (default `2700`)                            |
+| `LARGE_PNL_THRESHOLD_USD`        | No       | Realized PnL threshold for large-PnL alerts (default `5000`)                      |
+| `RESERVE_BREACH_COOLDOWN_MS`     | No       | Cooldown window for reserve-breach repeat alerts (default `1800000`)              |
+| `PORT`                           | No       | HTTP listen port (default `8080`)                                                 |
 
 ## Deployment
 
@@ -442,12 +442,12 @@ npm run local:down
 
 ### Service endpoints
 
-| Service | URL |
-| --- | --- |
-| Anvil RPC | `http://127.0.0.1:8545` |
+| Service                | URL                                |
+| ---------------------- | ---------------------------------- |
+| Anvil RPC              | `http://127.0.0.1:8545`            |
 | Envio GraphQL (Hasura) | `http://127.0.0.1:8080/v1/graphql` |
-| Envio playground | `http://127.0.0.1:8080` |
-| Web UI | `http://127.0.0.1:3000` |
+| Envio playground       | `http://127.0.0.1:8080`            |
+| Web UI                 | `http://127.0.0.1:3000`            |
 
 ### How it fits together
 
@@ -536,6 +536,7 @@ EPOCH_INTERVAL_MS=30000 npm run keeper:start
 ```
 
 Each epoch the keeper:
+
 1. Reads vault reserves and hub PnL across all deployed chains.
 2. Computes routing weights (inverse-proportional to idle USDC per chain).
 3. Computes per-vault global PnL adjustments (hub PnL distributed pro-rata).
@@ -643,7 +644,7 @@ Agent memory is deployment-aware: the runner fingerprints the active deployment 
 
 Editing an agent markdown file does not, by itself, force a new vault. The runner updates the stored agent file hash for bookkeeping, but if the remembered vault address is still present and the deployment fingerprint is unchanged, subsequent runs keep managing the same vault.
 
-**Paperclip operator dashboard (optional, narrow scope).** This repo is the canonical source of truth for the IndexFlow agent fleet. [`COMPANY.md`](COMPANY.md) (schema `agentcompanies/v1`, `name: IndexFlow`, `scope: meta_and_growth_agents`) declares the IndexFlow company identity, the engineering meta-agents Paperclip manages today (`issue-implementer`, `self-improver-issues`, plus their two prompt-only risk officers), and a brainstorm slate of growth/ops agents (`content-publisher`, `partnership-tracker`, `broadcast-bot`, `docs-syncer`, `basket-ideator`) that activate once their `agents/<id>.md` prompt files are authored. **Trading agents (the seven `vault-agent.yml` rotation slugs plus their `risk-officer`) and the Minestarters vault family stay repo-managed via this very `vault-agent.yml` CI flow** — Paperclip does not schedule or budget them. The boundary holds even for new vaults: `basket-ideator` *proposes* themes (`growth/basket-concepts/queue/`); the repo-managed trading-agent flow *deploys* them. A self-hosted [Paperclip](https://paperclip.ing) install plus the [`paperclip-agent-companies-plugin`](https://github.com/alvarosanchez/paperclip-agent-companies-plugin) discovers and daily-auto-syncs `COMPANY.md`, schedules active employees via a shell adapter that invokes `npm run agent:run -- <agent>`, enforces per-employee monthly budgets, and surfaces tickets / approvals from a web UI. The runner writes `agents/memory/<agent>/paperclip-heartbeat.json` (schema `paperclip.heartbeat/v1`) on every run; the existing `commit-results` job in `.github/workflows/vault-agent.yml` pushes it back to `main` automatically. See [`docs/AGENTS_FRAMEWORK.md`](docs/AGENTS_FRAMEWORK.md) §Paperclip Integration for the architecture diagram and setup runbook.
+**Paperclip operator dashboard (optional, narrow scope).** This repo is the canonical source of truth for the IndexFlow agent fleet. [`COMPANY.md`](COMPANY.md) (schema `agentcompanies/v1`, `name: IndexFlow`, `scope: meta_and_growth_agents`) declares the IndexFlow company identity, the engineering meta-agents Paperclip manages today (`issue-implementer`, `self-improver-issues`, plus their two prompt-only risk officers), and a brainstorm slate of growth/ops agents (`content-publisher`, `partnership-tracker`, `broadcast-bot`, `docs-syncer`, `basket-ideator`) that activate once their `agents/<id>.md` prompt files are authored. **Trading agents (the seven `vault-agent.yml` rotation slugs plus their `risk-officer`) and the Minestarters vault family stay repo-managed via this very `vault-agent.yml` CI flow** — Paperclip does not schedule or budget them. The boundary holds even for new vaults: `basket-ideator` _proposes_ themes (`growth/basket-concepts/queue/`); the repo-managed trading-agent flow _deploys_ them. A self-hosted [Paperclip](https://paperclip.ing) install plus the [`paperclip-agent-companies-plugin`](https://github.com/alvarosanchez/paperclip-agent-companies-plugin) discovers and daily-auto-syncs `COMPANY.md`, schedules active employees via a shell adapter that invokes `npm run agent:run -- <agent>`, enforces per-employee monthly budgets, and surfaces tickets / approvals from a web UI. The runner writes `agents/memory/<agent>/paperclip-heartbeat.json` (schema `paperclip.heartbeat/v1`) on every run; the existing `commit-results` job in `.github/workflows/vault-agent.yml` pushes it back to `main` automatically. See [`docs/AGENTS_FRAMEWORK.md`](docs/AGENTS_FRAMEWORK.md) §Paperclip Integration for the architecture diagram and setup runbook.
 
 ### Agent Infrastructure
 
